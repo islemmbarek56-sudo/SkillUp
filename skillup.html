@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillUp - 6th Grade Platform</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f4ff;
+      }
+
+      /* Login Page */
+      .login-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #2d4495, #4b61b1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .login-box {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        width: 450px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+      .login-box svg {
+        width: 180px;
+        margin-bottom: 20px;
+      }
+      .login-box h1 {
+        color: #2d4495;
+        margin-bottom: 5px;
+        font-size: 28px;
+      }
+      .login-box .subtitle {
+        color: #666;
+        margin-bottom: 25px;
+        font-size: 14px;
+      }
+      .login-box input {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        font-size: 14px;
+      }
+      .login-box button {
+        width: 100%;
+        padding: 12px;
+        background: #2d4495;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      .login-box button:hover {
+        background: #1a2d6e;
+      }
+      .error {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      .success {
+        color: green;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      .switch-btn {
+        margin-top: 15px;
+        color: #2d4495;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: underline;
+      }
+      .name-row {
+        display: flex;
+        gap: 10px;
+      }
+      .name-row input {
+        flex: 1;
+      }
+      hr {
+        margin: 20px 0;
+      }
+
+      /* Dashboard */
+      .dashboard {
+        display: none;
+      }
+      .navbar {
+        background: white;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .navbar .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .navbar .logo svg {
+        width: 45px;
+      }
+      .navbar .logo span {
+        font-size: 22px;
+        font-weight: bold;
+        color: #2d4495;
+      }
+      .logout-btn {
+        background: #dc2626;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+      .hero {
+        background: linear-gradient(135deg, #2d4495, #4b61b1);
+        color: white;
+        padding: 30px;
+        margin: 20px;
+        border-radius: 15px;
+      }
+      .units-title {
+        font-size: 24px;
+        margin: 20px;
+        color: #1e293b;
+      }
+      .units-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 0 20px;
+      }
+      .unit-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .unit-header {
+        background: #f8fafc;
+        padding: 15px;
+        border-left: 4px solid #2d4495;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .unit-header h3 {
+        color: #1e293b;
+      }
+      .lessons {
+        display: none;
+        padding: 15px;
+      }
+      .lessons.show {
+        display: block;
+      }
+      .lesson {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 12px 0;
+      }
+      .lesson-title {
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .resources {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+      .resource {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .resource.video {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .resource.pdf {
+        background: #fef3c7;
+        color: #b45309;
+      }
+      .resource.activity {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .add-btn {
+        background: none;
+        border: 1px dashed #cbd5e1;
+        padding: 5px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+      .doc-section {
+        background: white;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 15px;
+      }
+      .upload-area {
+        border: 2px dashed #cbd5e1;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 15px 0;
+      }
+      .doc-list {
+        margin-top: 15px;
+      }
+      .doc-item {
+        background: #f8fafc;
+        padding: 8px 12px;
+        margin: 5px 0;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #64748b;
+      }
+
+      /* MODAL STYLES */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal-container {
+        background: white;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 450px;
+        padding: 28px;
+        position: relative;
+        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.2s ease;
+      }
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .modal-close {
+        position: absolute;
+        right: 18px;
+        top: 18px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 20px;
+      }
+      .modal-close:hover {
+        color: #475569;
+      }
+      .modal-container h2 {
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        color: #1e293b;
+        margin-bottom: 24px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 6px;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 14px;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #2d4495;
+        box-shadow: 0 0 0 3px rgba(45, 68, 149, 0.1);
+      }
+      .modal-submit {
+        width: 100%;
+        padding: 12px;
+        background: #98d8ef;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      .modal-submit:hover {
+        background: #7bc8e2;
+      }
+      .modal-cancel {
+        width: 100%;
+        padding: 12px;
+        background: white;
+        color: #64748b;
+        font-weight: 500;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .modal-cancel:hover {
+        background: #f8fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+      <div class="login-box">
+        <!-- NOUVEAU LOGO SkillUp -->
+        <svg
+          width="180"
+          height="140"
+          viewBox="0 0 400 300"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g stroke-linecap="round" stroke-width="8">
+            <line x1="200" y1="50" x2="200" y2="25" stroke="#00AEEF" />
+            <line x1="160" y1="65" x2="145" y2="45" stroke="#00AEEF" />
+            <line x1="240" y1="65" x2="255" y2="45" stroke="#FDB913" />
+            <line x1="130" y1="100" x2="105" y2="100" stroke="#B1A9D0" />
+            <line x1="270" y1="100" x2="295" y2="100" stroke="#FDB913" />
+          </g>
+          <path
+            d="M165,110 Q150,110 150,130 Q150,150 170,155 Q170,175 200,175 Q230,175 230,155 Q250,150 250,130 Q250,110 235,110 Q235,90 200,90 Q165,90 165,110"
+            fill="#FDB913"
+          />
+          <circle cx="185" cy="130" r="4" fill="#2E3192" />
+          <path
+            d="M215,130 Q222,125 230,130"
+            fill="none"
+            stroke="#2E3192"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            d="M190,145 Q200,155 210,145"
+            fill="none"
+            stroke="#2E3192"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            d="M130,170 L270,170 L290,200 Q290,215 270,215 L260,215 L260,225 Q260,235 250,235 L240,235 Q230,235 230,225 L230,215 L170,215 L170,225 Q170,235 160,235 L150,235 Q140,235 140,225 L140,215 L130,215 Q110,215 110,200 Z"
+            fill="#2E3192"
+          />
+          <path
+            d="M130,170 L200,170 L200,215 L130,215 Q110,215 110,200 L130,170"
+            fill="#B1A9D0"
+            opacity="0.5"
+          />
+          <text
+            x="200"
+            y="280"
+            font-family="system-ui, -apple-system, sans-serif"
+            font-weight="bold"
+            font-size="60"
+            fill="#2E3192"
+            text-anchor="middle"
+          >
+            skill up
+          </text>
+          <path
+            d="M178,235 L180,228 L182,235 L189,235 L184,239 L186,246 L180,242 L174,246 L176,239 L171,235 Z"
+            fill="#FDB913"
+          />
+        </svg>
+        <h1>SkillUp</h1>
+        <div class="subtitle">6th Grade Teaching Platform</div>
+
+        <!-- FORMULAIRE DE CONNEXION -->
+        <div id="loginForm">
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+            value="teacher@skillup.com"
+          />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            value="skillup123"
+          />
+          <div id="loginError" class="error"></div>
+          <button onclick="doLogin()">Sign In</button>
+          <div class="switch-btn" onclick="showRegisterForm()">
+            📝 Create an account
+          </div>
+        </div>
+
+        <!-- FORMULAIRE D'INSCRIPTION COMPLET -->
+        <div id="registerForm" style="display: none">
+          <div class="name-row">
+            <input type="text" id="regFirst" placeholder="First name" />
+            <input type="text" id="regLast" placeholder="Last name" />
+          </div>
+          <input type="email" id="regEmail" placeholder="Email" />
+          <input type="password" id="regPassword" placeholder="Password" />
+          <input
+            type="password"
+            id="regConfirm"
+            placeholder="Confirm password"
+          />
+          <div id="registerError" class="error"></div>
+          <div id="registerSuccess" class="success"></div>
+          <button onclick="doRegister()">Create Account</button>
+          <div class="switch-btn" onclick="showLoginForm()">
+            ← Back to Sign In
+          </div>
+        </div>
+
+        <hr />
+        <p style="font-size: 12px">Demo: teacher@skillup.com / skillup123</p>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard">
+      <div class="navbar">
+        <div class="logo">
+          <svg
+            width="40"
+            height="35"
+            viewBox="0 0 400 300"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M165,110 Q150,110 150,130 Q150,150 170,155 Q170,175 200,175 Q230,175 230,155 Q250,150 250,130 Q250,110 235,110 Q235,90 200,90 Q165,90 165,110"
+              fill="#FDB913"
+            />
+            <circle cx="185" cy="130" r="4" fill="#2E3192" />
+            <path
+              d="M130,170 L270,170 L290,200 Q290,215 270,215 L260,215 L260,225 Q260,235 250,235 L240,235 Q230,235 230,225 L230,215 L170,215 L170,225 Q170,235 160,235 L150,235 Q140,235 140,225 L140,215 L130,215 Q110,215 110,200 Z"
+              fill="#2E3192"
+            />
+            <text
+              x="200"
+              y="280"
+              font-family="system-ui"
+              font-weight="bold"
+              font-size="55"
+              fill="#2E3192"
+              text-anchor="middle"
+            >
+              skill up
+            </text>
+          </svg>
+          <span>SkillUp</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+
+      <div class="hero">
+        <h1>Welcome to your Dashboard</h1>
+        <p>8 units with 5 lessons each. Click on any unit to expand.</p>
+      </div>
+
+      <h2 class="units-title">📚 Thematic Units</h2>
+      <div id="unitsGrid" class="units-grid"></div>
+
+      <div class="doc-section">
+        <h3>📁 Document Manager</h3>
+        <p>Upload PDFs - click on any document to copy its link</p>
+        <div
+          class="upload-area"
+          onclick="document.getElementById('fileInput').click()"
+        >
+          📤 Click or drag & drop to upload files
+          <input type="file" id="fileInput" multiple style="display: none" />
+        </div>
+        <div id="docList" class="doc-list"></div>
+      </div>
+
+      <footer>SkillUp — 8 Units | 40 Lessons</footer>
+    </div>
+
+    <!-- MODAL ADD RESOURCE -->
+    <div id="resourceModal" class="modal-overlay">
+      <div class="modal-container">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2>Add Resource</h2>
+        <form id="resourceForm" onsubmit="submitResource(event)">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              id="resourceTitle"
+              placeholder="e.g. Khan Academy – Fractions"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>URL</label>
+            <input
+              type="url"
+              id="resourceUrl"
+              placeholder="https://..."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="resourceType">
+              <option value="video">Video</option>
+              <option value="pdf">Document (PDF)</option>
+              <option value="activity">Activity</option>
+            </select>
+          </div>
+          <button type="submit" class="modal-submit">Add Resource</button>
+          <button type="button" class="modal-cancel" onclick="closeModal()">
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // ========== USERS STORAGE ==========
+      let users = JSON.parse(localStorage.getItem("skillup_users") || "[]");
+      if (users.length === 0) {
+        users = [
+          {
+            email: "teacher@skillup.com",
+            password: "skillup123",
+            name: "Teacher",
+          },
+        ];
+        localStorage.setItem("skillup_users", JSON.stringify(users));
+      }
+
+      let currentUser = null;
+      let pendingResource = null;
+
+      // ========== 8 UNITS with 5 LESSONS each ==========
+      const unitsData = {
+        1: {
+          title: "Entertaining Myself",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        2: {
+          title: "Keeping Fit",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        3: {
+          title: "Having Fun in the Seasons",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        4: {
+          title: "Caring",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        5: {
+          title: "Celebrations",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        6: {
+          title: "Going Shopping",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        7: {
+          title: "Going Shopping (Advanced)",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+        8: {
+          title: "Digital World & Media",
+          lessons: [
+            { num: 1, name: "Lesson 1", resources: [] },
+            { num: 2, name: "Lesson 2", resources: [] },
+            { num: 3, name: "Lesson 3", resources: [] },
+            { num: 4, name: "Lesson 4", resources: [] },
+            { num: 5, name: "Lesson 5", resources: [] },
+          ],
+        },
+      };
+
+      // ========== AUTH FUNCTIONS ==========
+      function showRegisterForm() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        document.getElementById("registerError").innerText = "";
+        document.getElementById("registerSuccess").innerText = "";
+      }
+
+      function showLoginForm() {
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("loginError").innerText = "";
+      }
+
+      function doLogin() {
+        let email = document.getElementById("loginEmail").value.trim();
+        let pwd = document.getElementById("loginPassword").value;
+        let user = users.find((u) => u.email === email && u.password === pwd);
+        if (user) {
+          currentUser = user;
+          localStorage.setItem(
+            "skillup_session",
+            JSON.stringify({ email: user.email, name: user.name }),
+          );
+          showDashboard();
+        } else {
+          document.getElementById("loginError").innerText =
+            "Invalid credentials";
+        }
+      }
+
+      function doRegister() {
+        let first = document.getElementById("regFirst").value.trim();
+        let last = document.getElementById("regLast").value.trim();
+        let email = document.getElementById("regEmail").value.trim();
+        let pwd = document.getElementById("regPassword").value;
+        let confirm = document.getElementById("regConfirm").value;
+
+        // Validation
+        if (!first || !last || !email || !pwd) {
+          document.getElementById("registerError").innerText =
+            "All fields required";
+          return;
+        }
+        if (pwd !== confirm) {
+          document.getElementById("registerError").innerText =
+            "Passwords don't match";
+          return;
+        }
+        if (pwd.length < 4) {
+          document.getElementById("registerError").innerText =
+            "Password must be at least 4 characters";
+          return;
+        }
+        if (users.find((u) => u.email === email)) {
+          document.getElementById("registerError").innerText =
+            "Email already exists";
+          return;
+        }
+
+        let fullName = first + " " + last;
+        users.push({ email, password: pwd, name: fullName });
+        localStorage.setItem("skillup_users", JSON.stringify(users));
+
+        document.getElementById("registerSuccess").innerText =
+          "Account created! Redirecting...";
+        setTimeout(() => {
+          currentUser = { email, name: fullName };
+          localStorage.setItem(
+            "skillup_session",
+            JSON.stringify({ email, name: fullName }),
+          );
+          showDashboard();
+        }, 1000);
+      }
+
+      function logout() {
+        localStorage.removeItem("skillup_session");
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("loginPage").style.display = "flex";
+        currentUser = null;
+        showLoginForm();
+      }
+
+      function showDashboard() {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        renderUnits();
+        loadDocuments();
+      }
+
+      // ========== RENDER UNITS ==========
+      function renderUnits() {
+        let container = document.getElementById("unitsGrid");
+        container.innerHTML = "";
+        for (let u = 1; u <= 8; u++) {
+          let unit = unitsData[u];
+          let lessonsHtml = "";
+          unit.lessons.forEach((lesson) => {
+            let resourcesHtml = "";
+            lesson.resources.forEach((r) => {
+              let icon =
+                r.type === "video" ? "🎬" : r.type === "pdf" ? "📄" : "🎯";
+              let cls =
+                r.type === "video"
+                  ? "video"
+                  : r.type === "pdf"
+                    ? "pdf"
+                    : "activity";
+              resourcesHtml += `<span class="resource ${cls}" onclick="openResource('${r.link}')">${icon} ${r.name}</span>`;
+            });
+            lessonsHtml += `
+                    <div class="lesson">
+                        <div class="lesson-title">
+                            <span>📖 ${lesson.name}</span>
+                            <button onclick="editLesson(${u}, ${lesson.num})" style="background:none; border:none; cursor:pointer;">✏️</button>
+                        </div>
+                        <div class="resources">${resourcesHtml}</div>
+                        <button class="add-btn" onclick="openAddResourceModal(${u}, ${lesson.num})">+ Add resource</button>
+                    </div>
+                `;
+          });
+          let card = document.createElement("div");
+          card.className = "unit-card";
+          card.innerHTML = `<div class="unit-header" onclick="toggleUnit(${u})"><h3>📌 Unit ${u}: ${unit.title}</h3><span>▼</span></div><div class="lessons" id="lessons-${u}">${lessonsHtml}</div>`;
+          container.appendChild(card);
+        }
+      }
+
+      function toggleUnit(unitId) {
+        let el = document.getElementById(`lessons-${unitId}`);
+        el.classList.toggle("show");
+      }
+
+      function editLesson(unitId, lessonNum) {
+        let lesson = unitsData[unitId].lessons.find((l) => l.num === lessonNum);
+        let newName = prompt("Enter new lesson name:", lesson.name);
+        if (newName) {
+          lesson.name = newName;
+          renderUnits();
+        }
+      }
+
+      // ========== MODAL FUNCTIONS ==========
+      function openAddResourceModal(unitId, lessonNum) {
+        pendingResource = { unitId, lessonNum };
+        document.getElementById("resourceModal").classList.add("active");
+        document.getElementById("resourceForm").reset();
+      }
+
+      function closeModal() {
+        document.getElementById("resourceModal").classList.remove("active");
+        pendingResource = null;
+      }
+
+      function submitResource(event) {
+        event.preventDefault();
+        if (!pendingResource) return;
+        let title = document.getElementById("resourceTitle").value.trim();
+        let url = document.getElementById("resourceUrl").value.trim();
+        let type = document.getElementById("resourceType").value;
+        if (!title || !url) {
+          alert("Please fill in all fields");
+          return;
+        }
+        if (url.includes("youtube.com/watch?v=")) {
+          url = url.replace("watch?v=", "embed/");
+        }
+        let lesson = unitsData[pendingResource.unitId].lessons.find(
+          (l) => l.num === pendingResource.lessonNum,
+        );
+        if (lesson) {
+          lesson.resources.push({ type, name: title, link: url });
+          renderUnits();
+        }
+        closeModal();
+      }
+
+      function openResource(link) {
+        window.open(link, "_blank");
+      }
+
+      // ========== DOCUMENTS ==========
+      function loadDocuments() {
+        let key = "skillup_docs_" + (currentUser ? currentUser.email : "");
+        let docs = JSON.parse(localStorage.getItem(key) || "[]");
+        let container = document.getElementById("docList");
+        if (docs.length === 0) {
+          container.innerHTML = "<p>No documents yet. Upload files above.</p>";
+          return;
+        }
+        container.innerHTML = "";
+        docs.forEach((doc, idx) => {
+          let div = document.createElement("div");
+          div.className = "doc-item";
+          div.innerHTML = `<span style="cursor:pointer; flex:1" onclick="copyLink('${doc.url}')">📄 ${doc.name}</span><button onclick="deleteDoc(${idx})">🗑️</button>`;
+          container.appendChild(div);
+        });
+      }
+
+      function copyLink(link) {
+        navigator.clipboard.writeText(link);
+        alert("Link copied: " + link);
+      }
+
+      function deleteDoc(idx) {
+        let key = "skillup_docs_" + currentUser.email;
+        let docs = JSON.parse(localStorage.getItem(key) || "[]");
+        docs.splice(idx, 1);
+        localStorage.setItem(key, JSON.stringify(docs));
+        loadDocuments();
+      }
+
+      function addDocument(file) {
+        let key = "skillup_docs_" + currentUser.email;
+        let docs = JSON.parse(localStorage.getItem(key) || "[]");
+        let url = URL.createObjectURL(file);
+        docs.push({ name: file.name, url: url });
+        localStorage.setItem(key, JSON.stringify(docs));
+        loadDocuments();
+      }
+
+      // ========== CHECK SESSION ON PAGE LOAD ==========
+      let saved = localStorage.getItem("skillup_session");
+      if (saved) {
+        let sess = JSON.parse(saved);
+        let user = users.find((u) => u.email === sess.email);
+        if (user) {
+          currentUser = user;
+          showDashboard();
+        }
+      }
+
+      // ========== FILE UPLOAD ==========
+      document.getElementById("fileInput").onchange = (e) => {
+        Array.from(e.target.files).forEach((f) => addDocument(f));
+        e.target.value = "";
+      };
+
+      let uploadArea = document.querySelector(".upload-area");
+      if (uploadArea) {
+        uploadArea.ondragover = (e) => {
+          e.preventDefault();
+          uploadArea.style.background = "#eef2ff";
+        };
+        uploadArea.ondragleave = () => {
+          uploadArea.style.background = "";
+        };
+        uploadArea.ondrop = (e) => {
+          e.preventDefault();
+          uploadArea.style.background = "";
+          Array.from(e.dataTransfer.files).forEach((f) => addDocument(f));
+        };
+      }
+    </script>
+  </body>
+</html>
